@@ -61,15 +61,17 @@
   .del-card-btn{font-size:11px;color:var(--ink-faint);background:none;border:none;cursor:pointer;transition:color .15s;letter-spacing:.04em;text-transform:uppercase;}
   .del-card-btn:hover{color:var(--burgundy);}
 
-  /* PHASE */
-  .phase-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
-  .phase-label{font-size:11px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.05em;width:38px;flex-shrink:0;}
-  .phase-track{flex:1;height:2px;background:var(--surface);border-radius:2px;overflow:hidden;}
-  .phase-fill{height:100%;border-radius:2px;transition:width .4s;}
-  .phase-pct{font-size:11px;color:var(--ink-muted);width:26px;text-align:right;flex-shrink:0;}
-  .phase-desc{font-size:12px;color:var(--ink-muted);margin-bottom:12px;}
+  /* STAGE BUTTONS */
+  .stage-row{display:flex;align-items:center;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+  .stage-btn{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--ink-muted);cursor:pointer;transition:all .15s;white-space:nowrap;}
+  .stage-btn:hover{border-color:var(--border-dark);color:var(--ink);}
+  .stage-btn.active{background:var(--ink);color:white;border-color:var(--ink);}
 
-  /* TASKS */
+  /* LOAD */
+  .load-wrap{margin-top:12px;padding-top:10px;border-top:1px solid var(--surface);}
+  .load-label-row{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-muted);margin-bottom:5px;}
+  .load-bar{height:2px;background:var(--surface);border-radius:2px;overflow:hidden;}
+  .load-fill{height:100%;border-radius:2px;}
   .tasks-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
   .tasks-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-muted);}
   .round-btn{width:20px;height:20px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--ink-muted);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;line-height:1;flex-shrink:0;}
@@ -379,6 +381,18 @@
     });
   }
 
+  const STAGES = ['Подготовка','Создание продукта','Запуск','Монетизация'];
+  const STAGE_PCT = [10, 35, 65, 90];
+
+  function calcLoad(projId) {
+    const tasks = state.tasks.filter(t => t.projectId === projId && String(t.done) !== 'true');
+    const n = tasks.length;
+    if (n <= 2) return { label: 'Низкая', pct: 20 };
+    if (n <= 5) return { label: 'Средняя', pct: 55 };
+    if (n <= 8) return { label: 'Высокая', pct: 80 };
+    return { label: 'Очень высокая', pct: 100 };
+  }
+
   function buildProjectCard(proj, tasks) {
     const card = document.createElement('div');
     card.className = 'project-card';
@@ -386,9 +400,19 @@
 
     const priMap = {'p-hot':'🔥 Горит','p-mid':'⚡ Средний','p-low':'🧊 Фон'};
     const isPersonal = proj.section === 'personal';
+    const load = calcLoad(proj.id);
+
+    // current stage index
+    const stageIndex = STAGES.indexOf(proj.phaseDesc);
+    const curStage = stageIndex >= 0 ? stageIndex : 0;
 
     let tasksHtml = tasks.map(t => buildTaskHtml(t)).join('');
     if (!tasksHtml) tasksHtml = '<div style="font-size:13px;color:var(--ink-faint);padding:6px 0;">Задач пока нет</div>';
+
+    const stageButtons = !isPersonal ? `
+      <div class="stage-row">
+        ${STAGES.map((s,i) => `<button class="stage-btn${i===curStage?' active':''}" onclick="changeStage(event,'${proj.id}',${i})">${s}</button>`).join('')}
+      </div>` : '';
 
     card.innerHTML = `
       <div class="project-accent" style="background:${proj.color}"></div>
@@ -402,13 +426,7 @@
           ${!isPersonal ? `<button class="del-card-btn" onclick="confirmDelete(this)">удалить</button>` : ''}
         </div>
       </div>
-      ${!isPersonal ? `
-      <div class="phase-row">
-        <div class="phase-label">Этап</div>
-        <div class="phase-track"><div class="phase-fill" style="background:${proj.color};width:${proj.phase}%"></div></div>
-        <div class="phase-pct">${proj.phase}%</div>
-      </div>
-      <div class="phase-desc">▸ ${proj.phaseDesc}</div>` : ''}
+      ${stageButtons}
       <div class="tasks-header">
         <div class="tasks-lbl">Задачи</div>
         <div class="round-btn" onclick="openTaskModal('${proj.id}')">+</div>
@@ -416,14 +434,35 @@
       <div id="tasks-${proj.id}">${tasksHtml}</div>
       ${!isPersonal ? `
       <div class="load-wrap">
-        <div class="load-label-row"><span>Загрузка</span><span>${proj.loadLabel}</span></div>
-        <div class="load-bar"><div class="load-fill" style="background:${proj.color};width:${proj.loadPct}%"></div></div>
+        <div class="load-label-row"><span>Загрузка</span><span id="load-label-${proj.id}">${load.label}</span></div>
+        <div class="load-bar"><div class="load-fill" id="load-fill-${proj.id}" style="background:${proj.color};width:${load.pct}%"></div></div>
       </div>` : ''}
     `;
 
-    // bind task events
     card.querySelectorAll('.task-item').forEach(item => bindTaskEvents(item));
     return card;
+  }
+
+  async function changeStage(e, projId, stageIdx) {
+    e.stopPropagation();
+    const proj = state.projects.find(p => p.id === projId);
+    if (!proj) return;
+    proj.phaseDesc = STAGES[stageIdx];
+    proj.phase = STAGE_PCT[stageIdx];
+    // update buttons UI
+    const card = document.querySelector(`[data-proj-id="${projId}"]`);
+    if (card) {
+      card.querySelectorAll('.stage-btn').forEach((btn, i) => btn.classList.toggle('active', i === stageIdx));
+    }
+    await api('updateStage', { id: projId, phaseDesc: STAGES[stageIdx], phase: STAGE_PCT[stageIdx] });
+  }
+
+  function refreshLoad(projId, color) {
+    const load = calcLoad(projId);
+    const lbl = document.getElementById('load-label-' + projId);
+    const fill = document.getElementById('load-fill-' + projId);
+    if (lbl) lbl.textContent = load.label;
+    if (fill) fill.style.width = load.pct + '%';
   }
 
   function buildTaskHtml(t) {
@@ -491,6 +530,7 @@
     const task = state.tasks.find(t => t.id === id);
     if (task) task.done = !wasDone ? 'true' : 'false';
     updateStats();
+    refreshLoad(task ? task.projectId : '', '');
     await api('toggleTask', { id, done: !wasDone });
   }
 
