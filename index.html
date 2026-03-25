@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Наташа · Projects</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <style>
   :root {
     --bg:#f4f0e8;--surface:#ede8de;--card:#ffffff;
@@ -768,11 +769,9 @@
   // ——— INIT ———
   loadAndRender();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <style>
   .drag-ghost { opacity: .35; background: var(--surface) !important; border: 1.5px dashed var(--border-dark) !important; border-radius: 8px; }
   .drag-chosen { box-shadow: 0 4px 16px rgba(30,26,22,.1); }
-  .drag-dragging { opacity: .9; }
   body:not(.is-mobile) .task-item { cursor: grab; }
   body:not(.is-mobile) .task-item:active { cursor: grabbing; }
 </style>
