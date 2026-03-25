@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Наташа · Projects</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <style>
   :root {
     --bg:#f4f0e8;--surface:#ede8de;--card:#ffffff;
@@ -353,7 +352,6 @@
     }
     state = data;
     renderAll();
-    setTimeout(initSortable, 100);
     document.getElementById('pageLoader').classList.add('hidden');
   }
 
@@ -708,7 +706,7 @@
     }
     updateStats();
     closeModal('taskModal');
-    setTimeout(initSortable, 50);
+  }
 
   async function submitFocus() {
     const proj = document.getElementById('focusProjInput').value.trim() || '—';
@@ -728,52 +726,8 @@
     }
   });
 
-  // ——— DRAG & DROP (desktop only) ———
-  function initSortable() {
-    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || window.matchMedia('(pointer: coarse)').matches;
-    if (isMobile) return;
-
-    document.querySelectorAll('[id^="tasks-"]').forEach(container => {
-      if (container._sortable) container._sortable.destroy();
-      container._sortable = new Sortable(container, {
-        animation: 150,
-        ghostClass: 'drag-ghost',
-        chosenClass: 'drag-chosen',
-        filter: 'button, [contenteditable]',
-        preventOnFilter: false,
-        onEnd: function() {
-          const projId = container.id.replace('tasks-', '');
-          const newOrder = [];
-          container.querySelectorAll('.task-item').forEach(item => {
-            const found = state.tasks.find(t => t.id === item.dataset.taskId);
-            if (found) newOrder.push(found);
-          });
-          state.tasks = [
-            ...state.tasks.filter(t => t.projectId !== projId),
-            ...newOrder
-          ];
-        }
-      });
-    });
-
-    const focusGrid = document.getElementById('focusGrid');
-    if (focusGrid && !focusGrid._sortable) {
-      focusGrid._sortable = new Sortable(focusGrid, {
-        animation: 150,
-        ghostClass: 'drag-ghost',
-        chosenClass: 'drag-chosen',
-      });
-    }
-  }
-
   // ——— INIT ———
   loadAndRender();
 </script>
-<style>
-  .drag-ghost { opacity: .35; background: var(--surface) !important; border: 1.5px dashed var(--border-dark) !important; border-radius: 8px; }
-  .drag-chosen { box-shadow: 0 4px 16px rgba(30,26,22,.1); }
-  body:not(.is-mobile) .task-item { cursor: grab; }
-  body:not(.is-mobile) .task-item:active { cursor: grabbing; }
-</style>
 </body>
 </html>
