@@ -316,6 +316,15 @@
     color: var(--ink);
     flex: 1;
     line-height: 1.4;
+    cursor: text;
+  }
+
+  .task-text[contenteditable="true"] {
+    outline: none;
+    background: var(--surface);
+    border-radius: 4px;
+    padding: 1px 5px;
+    cursor: text;
   }
 
   .task-item.done .task-text { color: var(--ink-faint); text-decoration: line-through; }
@@ -904,9 +913,29 @@
     document.getElementById('stat-pct').textContent      = all.length ? Math.round(done.length/all.length*100)+'%' : '0%';
   }
 
+  // TASK EDIT
+  function enableEdit(textEl){
+    textEl.setAttribute('contenteditable','true');
+    textEl.focus();
+    const range=document.createRange();
+    range.selectNodeContents(textEl); range.collapse(false);
+    const sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+    function finish(){
+      textEl.removeAttribute('contenteditable');
+      if(!textEl.textContent.trim()) textEl.textContent='...';
+      textEl.removeEventListener('blur',finish);
+      textEl.removeEventListener('keydown',onKey);
+    }
+    function onKey(e){ if(e.key==='Enter'){e.preventDefault();finish();} if(e.key==='Escape') finish(); }
+    textEl.addEventListener('blur',finish);
+    textEl.addEventListener('keydown',onKey);
+  }
+
   // TASK
   function toggleTask(el){
     if(el.tagName==='BUTTON'||el.closest('button')) return;
+    const txt=el.querySelector('.task-text');
+    if(txt&&txt.getAttribute('contenteditable')==='true') return;
     el.classList.toggle('done');
     el.querySelector('.task-check').textContent = el.classList.contains('done') ? '✓' : '';
     updateStats();
@@ -919,10 +948,11 @@
   }
 
   function makeTaskEl(text){
-    const div = document.createElement('div');
+    const div=document.createElement('div');
     div.className='task-item';
     div.onclick=function(e){ if(!e.target.closest('button')) toggleTask(this); };
-    div.innerHTML=`<div class="task-check"></div><div class="task-text">${text}</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div>`;
+    div.innerHTML=`<div class="task-check"></div><div class="task-text" title="Двойной клик — редактировать">${text}</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div>`;
+    div.querySelector('.task-text').addEventListener('dblclick',function(e){ e.stopPropagation(); enableEdit(this); });
     return div;
   }
 
@@ -1099,6 +1129,11 @@
   });
 
   updateStats();
+
+  document.querySelectorAll('.task-text').forEach(function(txt){
+    txt.title='Двойной клик — редактировать';
+    txt.addEventListener('dblclick',function(e){ e.stopPropagation(); enableEdit(this); });
+  });
 </script>
 </body>
 </html>
