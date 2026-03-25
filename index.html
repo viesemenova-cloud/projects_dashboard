@@ -7,648 +7,181 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:           #f4f0e8;
-    --surface:      #ede8de;
-    --card:         #ffffff;
-    --border:       #e0d8cc;
-    --border-dark:  #c8bfb0;
-
-    --ink:          #1e1a16;
-    --ink-mid:      #4a4238;
-    --ink-muted:    #9a8f82;
-    --ink-faint:    #ccc4b8;
-
-    --burgundy:     #6b1f2e;
-    --burgundy-mid: #922b3e;
-    --burgundy-pale:#f5e8ea;
-
-    --navy:         #1a2d4f;
-    --navy-mid:     #2c4a7a;
-    --navy-pale:    #e8edf5;
-
-    --graphite:     #3a3f4a;
-    --graphite-mid: #5a6170;
-    --graphite-pale:#eceef2;
-
-    --warm-gold:    #8a7040;
-    --warm-gold-pale:#f5f0e4;
+    --bg:#f4f0e8;--surface:#ede8de;--card:#ffffff;
+    --border:#e0d8cc;--border-dark:#c8bfb0;
+    --ink:#1e1a16;--ink-mid:#4a4238;--ink-muted:#9a8f82;--ink-faint:#ccc4b8;
+    --burgundy:#6b1f2e;--burgundy-mid:#922b3e;--burgundy-pale:#f5e8ea;
+    --navy:#1a2d4f;--navy-mid:#2c4a7a;--navy-pale:#e8edf5;
+    --graphite:#3a3f4a;--graphite-mid:#5a6170;--graphite-pale:#eceef2;
+    --lilac:#7b6fb5;--lilac-mid:#9b8fd5;--lilac-pale:#eeebf8;
+    --warm-gold:#8a7040;--warm-gold-pale:#f5f0e4;
+    --star-active:#e8b800;
   }
-
-  * { margin:0; padding:0; box-sizing:border-box; }
-
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    min-height: 100vh;
-    padding: 38px 28px 100px;
-  }
-
-  /* ——— HEADER ——— */
-  .header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 32px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-  }
-
-  .logo em {
-    font-style: italic;
-    font-weight: 400;
-    color: var(--ink-muted);
-  }
-
-  .date {
-    font-size: 12px;
-    color: var(--ink-muted);
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-  }
-
-  /* ——— STATS ——— */
-  .summary {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 30px;
-  }
-
-  .stat {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 16px;
-  }
-
-  .stat-val {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    color: var(--ink);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .stat-label {
-    font-size: 11px;
-    color: var(--ink-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-  }
-
-  /* ——— SECTION ——— */
-  .section-title {
-    font-size: 11px;
-    color: var(--ink-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin-bottom: 12px;
-    margin-top: 26px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* ——— PROJECT CARD ——— */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  .project-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px 20px 16px;
-    position: relative;
-    transition: box-shadow 0.2s, border-color 0.2s;
-  }
-
-  .project-card:hover {
-    border-color: var(--border-dark);
-    box-shadow: 0 4px 20px rgba(30,26,22,0.06);
-  }
-
-  .project-accent {
-    position: absolute;
-    top: 0; left: 20px;
-    width: 24px; height: 3px;
-    border-radius: 0 0 3px 3px;
-  }
-
-  .project-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 12px;
-    margin-top: 8px;
-  }
-
-  .project-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 17px;
-    color: var(--ink);
-    margin-bottom: 2px;
-    line-height: 1.2;
-  }
-
-  .project-meta {
-    font-size: 12px;
-    color: var(--ink-muted);
-  }
-
-  .top-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
-    flex-shrink: 0;
-  }
-
-  .priority-badge {
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: opacity 0.15s;
-    white-space: nowrap;
-  }
-
-  .priority-badge:hover { opacity: 0.7; }
-  .p-hot  { background: var(--burgundy-pale); color: var(--burgundy);    border: 1px solid #e0b8be; }
-  .p-mid  { background: var(--navy-pale);     color: var(--navy-mid);    border: 1px solid #c0cce0; }
-  .p-low  { background: var(--graphite-pale); color: var(--graphite-mid);border: 1px solid #d0d4da; }
-
-  .del-card-btn {
-    font-size: 11px;
-    color: var(--ink-faint);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    transition: color 0.15s;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .del-card-btn:hover { color: var(--burgundy); }
-
-  /* ——— PHASE ——— */
-  .phase-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 7px;
-  }
-
-  .phase-label {
-    font-size: 11px;
-    color: var(--ink-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    width: 38px;
-    flex-shrink: 0;
-  }
-
-  .phase-track {
-    flex: 1;
-    height: 2px;
-    background: var(--surface);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-
-  .phase-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
-
-  .phase-pct {
-    font-size: 11px;
-    color: var(--ink-muted);
-    width: 26px;
-    text-align: right;
-    flex-shrink: 0;
-  }
-
-  .phase-desc {
-    font-size: 12px;
-    color: var(--ink-muted);
-    margin-bottom: 12px;
-  }
-
-  /* ——— TASKS ——— */
-  .tasks-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 7px;
-  }
-
-  .tasks-lbl {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--ink-muted);
-  }
-
-  .round-btn {
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--ink-muted);
-    font-size: 15px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    transition: all 0.15s;
-    line-height: 1;
-    flex-shrink: 0;
-  }
-
-  .round-btn:hover { background: var(--ink); color: white; border-color: var(--ink); }
-
-  .task-item {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    padding: 6px 0;
-    border-bottom: 1px solid var(--surface);
-    cursor: pointer;
-  }
-
-  .task-item:last-child { border-bottom: none; }
-
-  .task-check {
-    width: 15px; height: 15px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border-dark);
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 8px;
-    color: white;
-    transition: all 0.15s;
-  }
-
-  .task-item.done .task-check { background: var(--ink); border-color: var(--ink); }
-
-  .task-text {
-    font-size: 14px;
-    color: var(--ink);
-    flex: 1;
-    line-height: 1.4;
-    cursor: text;
-  }
-
-  .task-text[contenteditable="true"] {
-    outline: none;
-    background: var(--surface);
-    border-radius: 4px;
-    padding: 1px 5px;
-    cursor: text;
-  }
-
-  .task-item.done .task-text { color: var(--ink-faint); text-decoration: line-through; }
-
-  .task-actions {
-    display: flex; gap: 3px;
-    opacity: 0;
-    transition: opacity 0.15s;
-    flex-shrink: 0;
-  }
-
-  .task-item:hover .task-actions { opacity: 1; }
-
-  .tact {
-    width: 20px; height: 20px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px;
-    transition: all 0.15s;
-    background: var(--surface);
-    color: var(--ink-muted);
-  }
-
-  .tact.focus-btn:hover { background: var(--navy);     color: white; }
-  .tact.del-btn:hover   { background: var(--burgundy-pale); color: var(--burgundy); }
-
-  /* ——— LOAD ——— */
-  .load-wrap {
-    margin-top: 12px;
-    padding-top: 10px;
-    border-top: 1px solid var(--surface);
-  }
-
-  .load-label-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: var(--ink-muted);
-    margin-bottom: 5px;
-  }
-
-  .load-bar { height: 2px; background: var(--surface); border-radius: 2px; overflow: hidden; }
-  .load-fill { height: 100%; border-radius: 2px; }
-
-  /* ——— ADD PROJECT ——— */
-  .add-project-card {
-    background: var(--card);
-    border: 1.5px dashed var(--border-dark);
-    border-radius: 16px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    cursor: pointer;
-    min-height: 140px;
-    transition: all 0.2s;
-    color: var(--ink-muted);
-  }
-
-  .add-project-card:hover {
-    border-color: var(--ink-mid);
-    color: var(--ink);
-    background: var(--surface);
-  }
-
-  .add-project-icon {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    background: var(--surface);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-    transition: background 0.2s;
-  }
-
-  .add-project-card:hover .add-project-icon { background: var(--border); }
-
-  .add-project-lbl { font-size: 13px; }
-
-  /* ——— FOCUS WEEK ——— */
-  .focus-section {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 22px;
-  }
-
-  .focus-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-
-  .focus-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 17px;
-    color: var(--ink);
-  }
-
-  .focus-week-lbl {
-    font-size: 12px;
-    color: var(--ink-muted);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    margin-left: 8px;
-  }
-
-  .focus-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-
-  .focus-item {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px 12px 28px;
-    position: relative;
-    transition: border-color 0.2s;
-  }
-
-  .focus-item:hover { border-color: var(--border-dark); }
-  .focus-item.done-focus { opacity: 0.38; }
-
-  .focus-item-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 5px;
-  }
-
-  .focus-proj {
-    font-size: 11px;
-    color: var(--ink-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-  }
-
-  .focus-del {
-    width: 14px; height: 14px;
-    border-radius: 3px;
-    background: none; border: none;
-    cursor: pointer;
-    color: transparent;
-    font-size: 10px;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s;
-  }
-
-  .focus-item:hover .focus-del { color: var(--ink-muted); }
-  .focus-del:hover { color: var(--burgundy) !important; }
-
-  .focus-input {
-    font-size: 13px;
-    color: var(--ink);
-    line-height: 1.4;
-    width: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    padding: 0;
-  }
-
-  .focus-input:focus { background: rgba(30,26,22,0.03); border-radius: 3px; padding: 0 2px; }
-
-  .focus-done-btn {
-    position: absolute;
-    bottom: 8px; right: 10px;
-    width: 16px; height: 16px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border-dark);
-    background: none; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 8px; color: white;
-    transition: all 0.15s;
-  }
-
-  .focus-item.done-focus .focus-done-btn { background: var(--ink); border-color: var(--ink); }
-
-  /* ——— MODAL ——— */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(30,26,22,0.4);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .modal-overlay.open { display: flex; }
-
-  .modal {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 26px;
-    width: 420px;
-    max-width: 92vw;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-
-  .modal h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 20px;
-    color: var(--ink);
-    margin-bottom: 18px;
-  }
-
-  .field-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--ink-muted);
-    margin-bottom: 6px;
-    margin-top: 14px;
-  }
-
-  .field-label:first-of-type { margin-top: 0; }
-
-  .modal input, .modal select, .modal textarea {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    padding: 10px 13px;
-    color: var(--ink);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    outline: none;
-  }
-
-  .modal textarea { resize: vertical; min-height: 65px; }
-  .modal input::placeholder, .modal textarea::placeholder { color: var(--ink-faint); }
-  .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: var(--ink-mid); }
-  .modal select { appearance: none; cursor: pointer; }
-
-  .color-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
-
-  .color-dot {
-    width: 26px; height: 26px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: all 0.15s;
-    flex-shrink: 0;
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-  }
-
-  .color-dot.selected { outline-color: var(--ink); }
-  .color-dot:hover { transform: scale(1.1); }
-
-  .modal-btns {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    margin-top: 20px;
-  }
-
-  .btn {
-    padding: 10px 20px;
-    border-radius: 9px;
-    border: none;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    transition: opacity 0.15s;
-  }
-
-  .btn:hover { opacity: 0.8; }
-  .btn-primary { background: var(--ink); color: white; font-weight: 400; }
-  .btn-ghost   { background: transparent; color: var(--ink-muted); border: 1px solid var(--border); }
-
-  /* ——— CONFIRM ——— */
-  .confirm-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(30,26,22,0.4);
-    z-index: 300;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .confirm-overlay.open { display: flex; }
-
-  .confirm-box {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
-    width: 320px;
-    max-width: 90vw;
-    text-align: center;
-  }
-
-  .confirm-box p {
-    font-size: 15px;
-    color: var(--ink-mid);
-    margin-bottom: 20px;
-    line-height: 1.5;
-  }
-
-  .confirm-box strong { color: var(--ink); font-weight: 500; }
-
-  .confirm-btns { display: flex; gap: 10px; justify-content: center; }
-
-  @media (max-width: 640px) {
-    .projects-grid { grid-template-columns: 1fr; }
-    .summary { grid-template-columns: repeat(2, 1fr); }
-    .focus-grid { grid-template-columns: 1fr 1fr; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;padding:38px 28px 100px;}
+
+  /* HEADER */
+  .header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+  .logo{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--ink);}
+  .logo em{font-style:italic;font-weight:400;color:var(--ink-muted);}
+  .date{font-size:12px;color:var(--ink-muted);letter-spacing:.07em;text-transform:uppercase;}
+
+  /* SYNC STATUS */
+  .sync-bar{display:flex;align-items:center;gap:8px;margin-bottom:20px;font-size:12px;color:var(--ink-muted);}
+  .sync-dot{width:7px;height:7px;border-radius:50%;background:var(--ink-faint);flex-shrink:0;transition:background .3s;}
+  .sync-dot.ok{background:#5a9e6f;}
+  .sync-dot.loading{background:var(--warm-gold);animation:pulse 1s infinite;}
+  .sync-dot.error{background:var(--burgundy-mid);}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+  /* STATS */
+  .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:30px;}
+  .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
+  .stat-val{font-family:'Playfair Display',serif;font-size:28px;color:var(--ink);line-height:1;margin-bottom:4px;}
+  .stat-label{font-size:11px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.07em;}
+
+  /* SECTION */
+  .section-title{font-size:11px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px;margin-top:26px;display:flex;align-items:center;gap:10px;}
+  .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+  /* PROJECT CARD */
+  .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+  .project-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 20px 16px;position:relative;transition:box-shadow .2s,border-color .2s;}
+  .project-card:hover{border-color:var(--border-dark);box-shadow:0 4px 20px rgba(30,26,22,.06);}
+  .project-accent{position:absolute;top:0;left:20px;width:24px;height:3px;border-radius:0 0 3px 3px;}
+  .project-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px;margin-top:8px;}
+  .project-name{font-family:'Playfair Display',serif;font-size:17px;color:var(--ink);margin-bottom:2px;line-height:1.2;}
+  .project-meta{font-size:12px;color:var(--ink-muted);}
+  .top-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+  .priority-badge{font-size:11px;font-weight:400;letter-spacing:.04em;text-transform:uppercase;padding:4px 10px;border-radius:20px;cursor:pointer;transition:opacity .15s;white-space:nowrap;}
+  .priority-badge:hover{opacity:.7;}
+  .p-hot{background:var(--burgundy-pale);color:var(--burgundy);border:1px solid #e0b8be;}
+  .p-mid{background:var(--navy-pale);color:var(--navy-mid);border:1px solid #c0cce0;}
+  .p-low{background:var(--graphite-pale);color:var(--graphite-mid);border:1px solid #d0d4da;}
+  .del-card-btn{font-size:11px;color:var(--ink-faint);background:none;border:none;cursor:pointer;transition:color .15s;letter-spacing:.04em;text-transform:uppercase;}
+  .del-card-btn:hover{color:var(--burgundy);}
+
+  /* PHASE */
+  .phase-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+  .phase-label{font-size:11px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.05em;width:38px;flex-shrink:0;}
+  .phase-track{flex:1;height:2px;background:var(--surface);border-radius:2px;overflow:hidden;}
+  .phase-fill{height:100%;border-radius:2px;transition:width .4s;}
+  .phase-pct{font-size:11px;color:var(--ink-muted);width:26px;text-align:right;flex-shrink:0;}
+  .phase-desc{font-size:12px;color:var(--ink-muted);margin-bottom:12px;}
+
+  /* TASKS */
+  .tasks-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
+  .tasks-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-muted);}
+  .round-btn{width:20px;height:20px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--ink-muted);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;line-height:1;flex-shrink:0;}
+  .round-btn:hover{background:var(--ink);color:white;border-color:var(--ink);}
+
+  .task-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--surface);cursor:pointer;}
+  .task-item:last-child{border-bottom:none;}
+  .task-check{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--border-dark);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;color:white;transition:all .15s;}
+  .task-item.done .task-check{background:var(--ink);border-color:var(--ink);}
+  .task-text{font-size:14px;color:var(--ink);flex:1;line-height:1.4;}
+  .task-item.done .task-text{color:var(--ink-faint);text-decoration:line-through;}
+  .task-text[contenteditable="true"]{outline:none;background:var(--surface);border-radius:4px;padding:1px 5px;}
+
+  .task-actions{display:flex;gap:3px;opacity:0;transition:opacity .15s;flex-shrink:0;}
+  .task-item:hover .task-actions{opacity:1;}
+  .tact{width:20px;height:20px;border-radius:5px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .15s;background:var(--surface);color:var(--ink-muted);}
+  .tact.edit-btn:hover{background:var(--lilac-pale);color:var(--lilac);}
+  .tact.focus-btn{transition:all .15s;}
+  .tact.focus-btn.starred{color:var(--star-active);background:rgba(232,184,0,.1);}
+  .tact.focus-btn:not(.starred):hover{background:var(--navy-pale);color:var(--navy-mid);}
+  .tact.del-btn:hover{background:var(--burgundy-pale);color:var(--burgundy);}
+
+  /* LOAD */
+  .load-wrap{margin-top:12px;padding-top:10px;border-top:1px solid var(--surface);}
+  .load-label-row{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-muted);margin-bottom:5px;}
+  .load-bar{height:2px;background:var(--surface);border-radius:2px;overflow:hidden;}
+  .load-fill{height:100%;border-radius:2px;}
+
+  /* ADD PROJECT */
+  .add-project-card{background:var(--card);border:1.5px dashed var(--border-dark);border-radius:16px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;min-height:140px;transition:all .2s;color:var(--ink-muted);}
+  .add-project-card:hover{border-color:var(--ink-mid);color:var(--ink);background:var(--surface);}
+  .add-project-icon{width:32px;height:32px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:20px;transition:background .2s;}
+  .add-project-card:hover .add-project-icon{background:var(--border);}
+  .add-project-lbl{font-size:13px;}
+
+  /* FOCUS */
+  .focus-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;}
+  .focus-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .focus-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--ink);}
+  .focus-week-lbl{font-size:12px;color:var(--ink-muted);font-family:'DM Sans',sans-serif;font-weight:300;margin-left:8px;}
+  .focus-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .focus-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 12px 28px;position:relative;transition:border-color .2s;}
+  .focus-item:hover{border-color:var(--border-dark);}
+  .focus-item.done-focus{opacity:.38;}
+  .focus-item-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
+  .focus-proj{font-size:11px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.07em;}
+  .focus-del{width:14px;height:14px;border-radius:3px;background:none;border:none;cursor:pointer;color:transparent;font-size:10px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+  .focus-item:hover .focus-del{color:var(--ink-muted);}
+  .focus-del:hover{color:var(--burgundy)!important;}
+  .focus-input{font-size:13px;color:var(--ink);line-height:1.4;width:100%;background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;font-weight:300;padding:0;}
+  .focus-input:focus{background:rgba(30,26,22,.03);border-radius:3px;padding:0 2px;}
+  .focus-done-btn{position:absolute;bottom:8px;right:10px;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border-dark);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:8px;color:white;transition:all .15s;}
+  .focus-item.done-focus .focus-done-btn{background:var(--ink);border-color:var(--ink);}
+
+  /* MODAL */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(30,26,22,.4);z-index:200;align-items:center;justify-content:center;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:26px;width:420px;max-width:92vw;max-height:90vh;overflow-y:auto;}
+  .modal h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--ink);margin-bottom:18px;}
+  .field-label{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-muted);margin-bottom:6px;margin-top:14px;}
+  .field-label:first-of-type{margin-top:0;}
+  .modal input,.modal select,.modal textarea{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:10px 13px;color:var(--ink);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;}
+  .modal textarea{resize:vertical;min-height:65px;}
+  .modal input::placeholder,.modal textarea::placeholder{color:var(--ink-faint);}
+  .modal input:focus,.modal select:focus,.modal textarea:focus{border-color:var(--ink-mid);}
+  .modal select{appearance:none;cursor:pointer;}
+  .color-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
+  .color-dot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .15s;flex-shrink:0;outline:2px solid transparent;outline-offset:2px;}
+  .color-dot.selected{outline-color:var(--ink);}
+  .color-dot:hover{transform:scale(1.1);}
+  .modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;}
+  .btn{padding:10px 20px;border-radius:9px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;transition:opacity .15s;}
+  .btn:hover{opacity:.8;}
+  .btn-primary{background:var(--ink);color:white;font-weight:400;}
+  .btn-ghost{background:transparent;color:var(--ink-muted);border:1px solid var(--border);}
+
+  /* CONFIRM */
+  .confirm-overlay{display:none;position:fixed;inset:0;background:rgba(30,26,22,.4);z-index:300;align-items:center;justify-content:center;}
+  .confirm-overlay.open{display:flex;}
+  .confirm-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;width:320px;max-width:90vw;text-align:center;}
+  .confirm-box p{font-size:15px;color:var(--ink-mid);margin-bottom:20px;line-height:1.5;}
+  .confirm-box strong{color:var(--ink);font-weight:500;}
+  .confirm-btns{display:flex;gap:10px;justify-content:center;}
+
+  /* LOADING OVERLAY */
+  .page-loader{position:fixed;inset:0;background:var(--bg);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .4s;}
+  .page-loader.hidden{opacity:0;pointer-events:none;}
+  .loader-logo{font-family:'Playfair Display',serif;font-size:24px;color:var(--ink);}
+  .loader-dots{display:flex;gap:6px;}
+  .loader-dot{width:6px;height:6px;border-radius:50%;background:var(--ink-faint);animation:pulse 1.2s infinite;}
+  .loader-dot:nth-child(2){animation-delay:.2s;}
+  .loader-dot:nth-child(3){animation-delay:.4s;}
+
+  @media(max-width:640px){
+    .projects-grid{grid-template-columns:1fr;}
+    .summary{grid-template-columns:repeat(2,1fr);}
+    .focus-grid{grid-template-columns:1fr 1fr;}
   }
 </style>
 </head>
 <body>
+
+<!-- PAGE LOADER -->
+<div class="page-loader" id="pageLoader">
+  <div class="loader-logo">Наташа · projects</div>
+  <div class="loader-dots">
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+  </div>
+  <div style="font-size:12px;color:var(--ink-muted)">Загружаем данные…</div>
+</div>
 
 <!-- HEADER -->
 <div class="header">
@@ -656,152 +189,31 @@
   <div class="date" id="dateStr"></div>
 </div>
 
+<!-- SYNC BAR -->
+<div class="sync-bar">
+  <div class="sync-dot" id="syncDot"></div>
+  <span id="syncText">Подключаемся…</span>
+</div>
+
 <!-- STATS -->
 <div class="summary">
-  <div class="stat"><div class="stat-val" id="stat-projects">5</div><div class="stat-label">Проектов</div></div>
-  <div class="stat"><div class="stat-val" id="stat-tasks">0</div><div class="stat-label">Задач</div></div>
-  <div class="stat"><div class="stat-val" id="stat-done">0</div><div class="stat-label">Готово</div></div>
-  <div class="stat"><div class="stat-val" id="stat-pct">0%</div><div class="stat-label">Прогресс</div></div>
+  <div class="stat"><div class="stat-val" id="stat-projects">—</div><div class="stat-label">Проектов</div></div>
+  <div class="stat"><div class="stat-val" id="stat-tasks">—</div><div class="stat-label">Задач</div></div>
+  <div class="stat"><div class="stat-val" id="stat-done">—</div><div class="stat-label">Готово</div></div>
+  <div class="stat"><div class="stat-val" id="stat-pct">—</div><div class="stat-label">Прогресс</div></div>
 </div>
 
 <!-- ЛИЧНОЕ -->
 <div class="section-title">Личное</div>
-<div class="projects-grid" style="margin-bottom:0">
-  <div class="project-card" id="proj-personal">
-    <div class="project-accent" style="background:var(--warm-gold)"></div>
-    <div class="project-top">
-      <div>
-        <div class="project-name">🌸 Личные дела</div>
-        <div class="project-meta">Для себя</div>
-      </div>
-      <div class="round-btn" onclick="openTaskModal('personal')">+</div>
-    </div>
-    <div class="tasks-header"><div class="tasks-lbl">Задачи</div></div>
-    <div id="tasks-personal">
-      <div class="task-item" onclick="toggleTask(this)">
-        <div class="task-check"></div>
-        <div class="task-text">Заказать маме цветы на ДР</div>
-        <div class="task-actions">
-          <button class="tact focus-btn" onclick="addToFocus(event,this)">★</button>
-          <button class="tact del-btn" onclick="delTask(event,this)">✕</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="projects-grid" style="margin-bottom:0" id="personalGrid"></div>
 
 <!-- ПРОЕКТЫ -->
 <div class="section-title">Проекты</div>
 <div class="projects-grid" id="projectsGrid">
-
-  <!-- MAFIA -->
-  <div class="project-card" id="proj-mafia">
-    <div class="project-accent" style="background:var(--burgundy-mid)"></div>
-    <div class="project-top">
-      <div><div class="project-name">🃏 Мафия</div><div class="project-meta">Партнёр: Рома · 50/50</div></div>
-      <div class="top-right">
-        <div class="priority-badge p-hot" onclick="cyclePriority(this)">🔥 Горит</div>
-        <button class="del-card-btn" onclick="confirmDelete(this)">удалить</button>
-      </div>
-    </div>
-    <div class="phase-row">
-      <div class="phase-label">Этап</div>
-      <div class="phase-track"><div class="phase-fill" style="background:var(--burgundy-mid);width:35%"></div></div>
-      <div class="phase-pct">35%</div>
-    </div>
-    <div class="phase-desc">▸ Создание смыслов и организация</div>
-    <div class="tasks-header"><div class="tasks-lbl">Задачи</div><div class="round-btn" onclick="openTaskModal('mafia')">+</div></div>
-    <div id="tasks-mafia">
-      <div class="task-item" onclick="toggleTask(this)"><div class="task-check"></div><div class="task-text">Утвердить концепт</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>
-      <div class="task-item" onclick="toggleTask(this)"><div class="task-check"></div><div class="task-text">Привезти игру из РФ</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>
-      <div class="task-item" onclick="toggleTask(this)"><div class="task-check"></div><div class="task-text">Найти помещение</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>
-      <div class="task-item" onclick="toggleTask(this)"><div class="task-check"></div><div class="task-text">Согласовать условия партнёрства</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>
-      <div class="task-item" onclick="toggleTask(this)"><div class="task-check"></div><div class="task-text">Расписать бота</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>
-      <div class="task-item" onclick="toggleTask(this)"><div class="task-check"></div><div class="task-text">Провести пилотную игру</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>
-      <div class="task-item" onclick="toggleTask(this)"><div class="task-check"></div><div class="task-text">Анонсы в чатах клуба</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>
-    </div>
-    <div class="load-wrap"><div class="load-label-row"><span>Загрузка</span><span>Высокая</span></div><div class="load-bar"><div class="load-fill" style="background:var(--burgundy-mid);width:80%"></div></div></div>
-  </div>
-
-  <!-- BOT -->
-  <div class="project-card" id="proj-bot">
-    <div class="project-accent" style="background:var(--navy-mid)"></div>
-    <div class="project-top">
-      <div><div class="project-name">🥗 Бот по питанию</div><div class="project-meta">Партнёр: Ксюша · 50/50</div></div>
-      <div class="top-right">
-        <div class="priority-badge p-mid" onclick="cyclePriority(this)">⚡ Средний</div>
-        <button class="del-card-btn" onclick="confirmDelete(this)">удалить</button>
-      </div>
-    </div>
-    <div class="phase-row">
-      <div class="phase-label">Этап</div>
-      <div class="phase-track"><div class="phase-fill" style="background:var(--navy-mid);width:10%"></div></div>
-      <div class="phase-pct">10%</div>
-    </div>
-    <div class="phase-desc">▸ Идея — разработка концепта</div>
-    <div class="tasks-header"><div class="tasks-lbl">Задачи</div><div class="round-btn" onclick="openTaskModal('bot')">+</div></div>
-    <div id="tasks-bot">
-      <div class="task-item" onclick="toggleTask(this)"><div class="task-check"></div><div class="task-text">Созвон с Ксюшей</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>
-      <div class="task-item" onclick="toggleTask(this)"><div class="task-check"></div><div class="task-text">Прописать концепт и ЦА</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>
-      <div class="task-item" onclick="toggleTask(this)"><div class="task-check"></div><div class="task-text">Условия партнёрства</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>
-    </div>
-    <div class="load-wrap"><div class="load-label-row"><span>Загрузка</span><span>Низкая</span></div><div class="load-bar"><div class="load-fill" style="background:var(--navy-mid);width:20%"></div></div></div>
-  </div>
-
-  <!-- PODCAST -->
-  <div class="project-card" id="proj-podcast">
-    <div class="project-accent" style="background:var(--graphite-mid)"></div>
-    <div class="project-top">
-      <div><div class="project-name">🎙️ Подкастная студия</div><div class="project-meta">Нячанг · офф-проект</div></div>
-      <div class="top-right">
-        <div class="priority-badge p-low" onclick="cyclePriority(this)">🧊 Фон</div>
-        <button class="del-card-btn" onclick="confirmDelete(this)">удалить</button>
-      </div>
-    </div>
-    <div class="phase-row">
-      <div class="phase-label">Этап</div>
-      <div class="phase-track"><div class="phase-fill" style="background:var(--graphite-mid);width:20%"></div></div>
-      <div class="phase-pct">20%</div>
-    </div>
-    <div class="phase-desc">▸ Разведка — задачи по мере появления</div>
-    <div class="tasks-header"><div class="tasks-lbl">Задачи</div><div class="round-btn" onclick="openTaskModal('podcast')">+</div></div>
-    <div id="tasks-podcast">
-      <div class="task-item" onclick="toggleTask(this)"><div class="task-check"></div><div class="task-text">Добавить задачи когда появятся</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>
-    </div>
-    <div class="load-wrap"><div class="load-label-row"><span>Загрузка</span><span>Фоновая</span></div><div class="load-bar"><div class="load-fill" style="background:var(--graphite-mid);width:8%"></div></div></div>
-  </div>
-
-  <!-- BLOG -->
-  <div class="project-card" id="proj-blog">
-    <div class="project-accent" style="background:var(--navy-mid)"></div>
-    <div class="project-top">
-      <div><div class="project-name">📱 Блог TikTok</div><div class="project-meta">Контент · личный бренд</div></div>
-      <div class="top-right">
-        <div class="priority-badge p-mid" onclick="cyclePriority(this)">⚡ Средний</div>
-        <button class="del-card-btn" onclick="confirmDelete(this)">удалить</button>
-      </div>
-    </div>
-    <div class="phase-row">
-      <div class="phase-label">Этап</div>
-      <div class="phase-track"><div class="phase-fill" style="background:var(--navy-mid);width:50%"></div></div>
-      <div class="phase-pct">50%</div>
-    </div>
-    <div class="phase-desc">▸ Регулярный постинг — систематизация</div>
-    <div class="tasks-header"><div class="tasks-lbl">Задачи</div><div class="round-btn" onclick="openTaskModal('blog')">+</div></div>
-    <div id="tasks-blog">
-      <div class="task-item" onclick="toggleTask(this)"><div class="task-check"></div><div class="task-text">Снять 3 рилса на неделю</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>
-      <div class="task-item" onclick="toggleTask(this)"><div class="task-check"></div><div class="task-text">Прогреть Threads</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>
-      <div class="task-item" onclick="toggleTask(this)"><div class="task-check"></div><div class="task-text">Контент-план на месяц</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>
-    </div>
-    <div class="load-wrap"><div class="load-label-row"><span>Загрузка</span><span>Средняя</span></div><div class="load-bar"><div class="load-fill" style="background:var(--navy-mid);width:55%"></div></div></div>
-  </div>
-
-  <!-- ADD NEW -->
   <div class="add-project-card" onclick="openNewProjectModal()">
     <div class="add-project-icon">+</div>
     <div class="add-project-lbl">Новый дашборд</div>
   </div>
-
 </div>
 
 <!-- FOCUS -->
@@ -811,13 +223,7 @@
     <div class="focus-title">✦ На этой неделе <span class="focus-week-lbl" id="weekLabel"></span></div>
     <div class="round-btn" onclick="openFocusModal()">+</div>
   </div>
-  <div class="focus-grid" id="focusGrid">
-    <div class="focus-item"><div class="focus-item-top"><div class="focus-proj">Мафия</div><button class="focus-del" onclick="delFocusItem(this)">✕</button></div><input class="focus-input" value="Утвердить концепт с Ромой" /><button class="focus-done-btn" onclick="toggleFocusDone(this)">✓</button></div>
-    <div class="focus-item"><div class="focus-item-top"><div class="focus-proj">Мафия</div><button class="focus-del" onclick="delFocusItem(this)">✕</button></div><input class="focus-input" value="Найти помещение" /><button class="focus-done-btn" onclick="toggleFocusDone(this)">✓</button></div>
-    <div class="focus-item"><div class="focus-item-top"><div class="focus-proj">Блог</div><button class="focus-del" onclick="delFocusItem(this)">✕</button></div><input class="focus-input" value="Снять 3 рилса" /><button class="focus-done-btn" onclick="toggleFocusDone(this)">✓</button></div>
-    <div class="focus-item"><div class="focus-item-top"><div class="focus-proj">Бот</div><button class="focus-del" onclick="delFocusItem(this)">✕</button></div><input class="focus-input" value="Созвониться с Ксюшей" /><button class="focus-done-btn" onclick="toggleFocusDone(this)">✓</button></div>
-    <div class="focus-item"><div class="focus-item-top"><div class="focus-proj">Личное</div><button class="focus-del" onclick="delFocusItem(this)">✕</button></div><input class="focus-input" value="Заказать маме цветы" /><button class="focus-done-btn" onclick="toggleFocusDone(this)">✓</button></div>
-  </div>
+  <div class="focus-grid" id="focusGrid"></div>
 </div>
 
 <!-- MODAL: TASK -->
@@ -862,6 +268,7 @@
     <div class="color-row" id="colorPicker">
       <div class="color-dot selected" data-color="#922b3e" style="background:#922b3e" onclick="selectColor(this)"></div>
       <div class="color-dot" data-color="#2c4a7a" style="background:#2c4a7a" onclick="selectColor(this)"></div>
+      <div class="color-dot" data-color="#7b6fb5" style="background:#7b6fb5" onclick="selectColor(this)"></div>
       <div class="color-dot" data-color="#5a6170" style="background:#5a6170" onclick="selectColor(this)"></div>
       <div class="color-dot" data-color="#8a7040" style="background:#8a7040" onclick="selectColor(this)"></div>
       <div class="color-dot" data-color="#2d8a63" style="background:#2d8a63" onclick="selectColor(this)"></div>
@@ -894,246 +301,433 @@
 </div>
 
 <script>
-  // DATE
+  // ——— CONFIG ———
+  // REPLACE THIS with your deployed Apps Script URL after deploying
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwJmQkDSnKZ52enSnnJeN6yxQpteXeluVA97wsLky5JGS05SqmKf9p64wA7GfZmqaEw/exec';
+
+  // ——— DATE ———
   const d = new Date();
   document.getElementById('dateStr').textContent = d.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
-  const mon = new Date(d); mon.setDate(d.getDate()-d.getDay()+1);
-  const sun = new Date(mon); sun.setDate(mon.getDate()+6);
-  document.getElementById('weekLabel').textContent =
-    mon.getDate()+' – '+sun.getDate()+' '+sun.toLocaleDateString('ru-RU',{month:'long'});
+  const mon=new Date(d); mon.setDate(d.getDate()-d.getDay()+1);
+  const sun=new Date(mon); sun.setDate(mon.getDate()+6);
+  document.getElementById('weekLabel').textContent = mon.getDate()+' – '+sun.getDate()+' '+sun.toLocaleDateString('ru-RU',{month:'long'});
 
-  // STATS
-  function updateStats(){
-    const all  = document.querySelectorAll('#projectsGrid .task-item, #proj-personal .task-item');
-    const done = document.querySelectorAll('#projectsGrid .task-item.done, #proj-personal .task-item.done');
-    const proj = document.querySelectorAll('#projectsGrid .project-card').length;
-    document.getElementById('stat-projects').textContent = proj;
-    document.getElementById('stat-tasks').textContent    = all.length;
-    document.getElementById('stat-done').textContent     = done.length;
-    document.getElementById('stat-pct').textContent      = all.length ? Math.round(done.length/all.length*100)+'%' : '0%';
-  }
+  // ——— STATE ———
+  let state = { projects:[], tasks:[], focus:[] };
 
-  // TASK EDIT
-  function enableEdit(textEl){
-    textEl.setAttribute('contenteditable','true');
-    textEl.focus();
-    const range=document.createRange();
-    range.selectNodeContents(textEl); range.collapse(false);
-    const sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
-    function finish(){
-      textEl.removeAttribute('contenteditable');
-      if(!textEl.textContent.trim()) textEl.textContent='...';
-      textEl.removeEventListener('blur',finish);
-      textEl.removeEventListener('keydown',onKey);
+  // ——— API ———
+  async function api(action, data={}) {
+    setSyncStatus('loading','Синхронизация…');
+    try {
+      const url = API_URL + '?action=' + action;
+      const res = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({ action, ...data }),
+        headers: { 'Content-Type': 'text/plain' }
+      });
+      const json = await res.json();
+      if (json.error) throw new Error(json.error);
+      setSyncStatus('ok','Синхронизировано');
+      return json;
+    } catch(e) {
+      setSyncStatus('error','Ошибка синхронизации');
+      console.error(e);
+      return null;
     }
-    function onKey(e){ if(e.key==='Enter'){e.preventDefault();finish();} if(e.key==='Escape') finish(); }
-    textEl.addEventListener('blur',finish);
-    textEl.addEventListener('keydown',onKey);
   }
 
-  // TASK
-  function toggleTask(el){
-    if(el.tagName==='BUTTON'||el.closest('button')) return;
-    const txt=el.querySelector('.task-text');
-    if(txt&&txt.getAttribute('contenteditable')==='true') return;
-    el.classList.toggle('done');
-    el.querySelector('.task-check').textContent = el.classList.contains('done') ? '✓' : '';
+  function setSyncStatus(type, text) {
+    const dot = document.getElementById('syncDot');
+    const txt = document.getElementById('syncText');
+    dot.className = 'sync-dot ' + type;
+    txt.textContent = text;
+  }
+
+  // ——— LOAD & RENDER ———
+  async function loadAndRender() {
+    const data = await api('load');
+    if (!data) {
+      document.getElementById('pageLoader').classList.add('hidden');
+      return;
+    }
+    state = data;
+    renderAll();
+    document.getElementById('pageLoader').classList.add('hidden');
+  }
+
+  function renderAll() {
+    renderProjects();
+    renderFocus();
     updateStats();
   }
 
-  function delTask(e, btn){
-    e.stopPropagation();
-    btn.closest('.task-item').remove();
-    updateStats();
+  function renderProjects() {
+    const personalGrid = document.getElementById('personalGrid');
+    const projectsGrid = document.getElementById('projectsGrid');
+
+    personalGrid.innerHTML = '';
+    // keep add button
+    const addBtn = projectsGrid.querySelector('.add-project-card');
+    projectsGrid.innerHTML = '';
+    projectsGrid.appendChild(addBtn);
+
+    state.projects.forEach(proj => {
+      const tasks = state.tasks.filter(t => t.projectId === proj.id);
+      const card = buildProjectCard(proj, tasks);
+      if (proj.section === 'personal') {
+        personalGrid.appendChild(card);
+      } else {
+        projectsGrid.insertBefore(card, addBtn);
+      }
+    });
   }
 
-  function makeTaskEl(text){
-    const div=document.createElement('div');
-    div.className='task-item';
-    div.onclick=function(e){ if(!e.target.closest('button')) toggleTask(this); };
-    div.innerHTML=`<div class="task-check"></div><div class="task-text" title="Двойной клик — редактировать">${text}</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div>`;
-    div.querySelector('.task-text').addEventListener('dblclick',function(e){ e.stopPropagation(); enableEdit(this); });
+  function buildProjectCard(proj, tasks) {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.dataset.projId = proj.id;
+
+    const priMap = {'p-hot':'🔥 Горит','p-mid':'⚡ Средний','p-low':'🧊 Фон'};
+    const isPersonal = proj.section === 'personal';
+
+    let tasksHtml = tasks.map(t => buildTaskHtml(t)).join('');
+    if (!tasksHtml) tasksHtml = '<div style="font-size:13px;color:var(--ink-faint);padding:6px 0;">Задач пока нет</div>';
+
+    card.innerHTML = `
+      <div class="project-accent" style="background:${proj.color}"></div>
+      <div class="project-top">
+        <div>
+          <div class="project-name">${proj.emoji} ${proj.name}</div>
+          <div class="project-meta">${proj.meta}</div>
+        </div>
+        <div class="top-right">
+          ${!isPersonal ? `<div class="priority-badge ${proj.priority}" onclick="cyclePriority(this)">${priMap[proj.priority]||'⚡ Средний'}</div>` : ''}
+          ${!isPersonal ? `<button class="del-card-btn" onclick="confirmDelete(this)">удалить</button>` : ''}
+        </div>
+      </div>
+      ${!isPersonal ? `
+      <div class="phase-row">
+        <div class="phase-label">Этап</div>
+        <div class="phase-track"><div class="phase-fill" style="background:${proj.color};width:${proj.phase}%"></div></div>
+        <div class="phase-pct">${proj.phase}%</div>
+      </div>
+      <div class="phase-desc">▸ ${proj.phaseDesc}</div>` : ''}
+      <div class="tasks-header">
+        <div class="tasks-lbl">Задачи</div>
+        <div class="round-btn" onclick="openTaskModal('${proj.id}')">+</div>
+      </div>
+      <div id="tasks-${proj.id}">${tasksHtml}</div>
+      ${!isPersonal ? `
+      <div class="load-wrap">
+        <div class="load-label-row"><span>Загрузка</span><span>${proj.loadLabel}</span></div>
+        <div class="load-bar"><div class="load-fill" style="background:${proj.color};width:${proj.loadPct}%"></div></div>
+      </div>` : ''}
+    `;
+
+    // bind task events
+    card.querySelectorAll('.task-item').forEach(item => bindTaskEvents(item));
+    return card;
+  }
+
+  function buildTaskHtml(t) {
+    const inFocus = String(t.inFocus) === 'true';
+    const done = String(t.done) === 'true';
+    return `<div class="task-item${done?' done':''}" data-task-id="${t.id}">
+      <div class="task-check">${done?'✓':''}</div>
+      <div class="task-text">${t.text}</div>
+      <div class="task-actions">
+        <button class="tact edit-btn" onclick="editTaskInline(event,this)" title="Редактировать">✎</button>
+        <button class="tact focus-btn${inFocus?' starred':''}" onclick="toggleFocusStar(event,this)" title="${inFocus?'Убрать из фокуса':'В фокус недели'}">★</button>
+        <button class="tact del-btn" onclick="delTask(event,this)">✕</button>
+      </div>
+    </div>`;
+  }
+
+  function bindTaskEvents(item) {
+    item.addEventListener('click', function(e) {
+      if (e.target.closest('button')) return;
+      toggleTaskDone(this);
+    });
+  }
+
+  function renderFocus() {
+    const grid = document.getElementById('focusGrid');
+    grid.innerHTML = '';
+    state.focus.forEach(f => {
+      const item = buildFocusItem(f);
+      grid.appendChild(item);
+    });
+  }
+
+  function buildFocusItem(f) {
+    const div = document.createElement('div');
+    div.className = 'focus-item' + (String(f.done)==='true'?' done-focus':'');
+    div.dataset.focusId = f.id;
+    div.innerHTML = `
+      <div class="focus-item-top">
+        <div class="focus-proj">${f.projectName}</div>
+        <button class="focus-del" onclick="delFocusItem(this)">✕</button>
+      </div>
+      <input class="focus-input" value="${f.text}" />
+      <button class="focus-done-btn" onclick="toggleFocusDone(this)">✓</button>
+    `;
     return div;
   }
 
-  // PRIORITY
+  // ——— STATS ———
+  function updateStats() {
+    const all = state.tasks.length;
+    const done = state.tasks.filter(t => String(t.done)==='true').length;
+    const proj = state.projects.filter(p => p.section !== 'personal').length;
+    document.getElementById('stat-projects').textContent = proj;
+    document.getElementById('stat-tasks').textContent = all;
+    document.getElementById('stat-done').textContent = done;
+    document.getElementById('stat-pct').textContent = all ? Math.round(done/all*100)+'%' : '0%';
+  }
+
+  // ——— TASK ACTIONS ———
+  async function toggleTaskDone(item) {
+    const id = item.dataset.taskId;
+    const wasDone = item.classList.contains('done');
+    item.classList.toggle('done');
+    item.querySelector('.task-check').textContent = item.classList.contains('done') ? '✓' : '';
+    const task = state.tasks.find(t => t.id === id);
+    if (task) task.done = !wasDone ? 'true' : 'false';
+    updateStats();
+    await api('toggleTask', { id, done: !wasDone });
+  }
+
+  async function delTask(e, btn) {
+    e.stopPropagation();
+    const item = btn.closest('.task-item');
+    const id = item.dataset.taskId;
+    item.remove();
+    state.tasks = state.tasks.filter(t => t.id !== id);
+    updateStats();
+    await api('deleteTask', { id });
+  }
+
+  function editTaskInline(e, btn) {
+    e.stopPropagation();
+    const item = btn.closest('.task-item');
+    const textEl = item.querySelector('.task-text');
+    const id = item.dataset.taskId;
+    textEl.setAttribute('contenteditable','true');
+    textEl.focus();
+    const range = document.createRange();
+    range.selectNodeContents(textEl); range.collapse(false);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+
+    async function finish() {
+      textEl.removeAttribute('contenteditable');
+      const newText = textEl.textContent.trim() || '...';
+      textEl.textContent = newText;
+      const task = state.tasks.find(t => t.id === id);
+      if (task) task.text = newText;
+      textEl.removeEventListener('blur', finish);
+      textEl.removeEventListener('keydown', onKey);
+      await api('updateTaskText', { id, text: newText });
+    }
+    function onKey(e) {
+      if (e.key==='Enter') { e.preventDefault(); finish(); }
+      if (e.key==='Escape') finish();
+    }
+    textEl.addEventListener('blur', finish);
+    textEl.addEventListener('keydown', onKey);
+  }
+
+  async function toggleFocusStar(e, btn) {
+    e.stopPropagation();
+    const item = btn.closest('.task-item');
+    const id = item.dataset.taskId;
+    const task = state.tasks.find(t => t.id === id);
+    const isStarred = btn.classList.contains('starred');
+
+    if (!isStarred) {
+      btn.classList.add('starred');
+      btn.title = 'Убрать из фокуса';
+      if (task) task.inFocus = 'true';
+      // get project name
+      const projId = task ? task.projectId : '';
+      const proj = state.projects.find(p => p.id === projId);
+      const projName = proj ? proj.name : '—';
+      const text = item.querySelector('.task-text').textContent;
+      const result = await api('saveFocus', { projectName: projName, text });
+      if (result && result.id) {
+        state.focus.push({ id: result.id, projectName: projName, text, done: 'false' });
+        renderFocus();
+      }
+    } else {
+      btn.classList.remove('starred');
+      btn.title = 'В фокус недели';
+      if (task) task.inFocus = 'false';
+      // find and remove from focus by text match
+      const text = item.querySelector('.task-text').textContent;
+      const focusItem = state.focus.find(f => f.text === text);
+      if (focusItem) {
+        state.focus = state.focus.filter(f => f.id !== focusItem.id);
+        await api('deleteFocus', { id: focusItem.id });
+        renderFocus();
+      }
+    }
+  }
+
+  // ——— FOCUS ACTIONS ———
+  async function delFocusItem(btn) {
+    const item = btn.closest('.focus-item');
+    const id = item.dataset.focusId;
+    item.remove();
+    state.focus = state.focus.filter(f => f.id !== id);
+    await api('deleteFocus', { id });
+  }
+
+  function toggleFocusDone(btn) {
+    btn.closest('.focus-item').classList.toggle('done-focus');
+  }
+
+  // ——— PRIORITY ———
   const pris=[{cls:'p-hot',lbl:'🔥 Горит'},{cls:'p-mid',lbl:'⚡ Средний'},{cls:'p-low',lbl:'🧊 Фон'}];
-  function cyclePriority(el){
+  function cyclePriority(el) {
     const cur=pris.findIndex(p=>el.classList.contains(p.cls));
     const next=pris[(cur+1)%3];
     pris.forEach(p=>el.classList.remove(p.cls));
     el.classList.add(next.cls); el.textContent=next.lbl;
   }
 
-  // FOCUS
-  function addToFocus(e,btn){
-    e.stopPropagation();
-    const item=btn.closest('.task-item');
-    const text=item.querySelector('.task-text').textContent;
-    const card=item.closest('.project-card,.personal-card');
-    const nameEl=card?card.querySelector('.project-name,.personal-name'):null;
-    const raw=nameEl?nameEl.textContent:'Личное';
-    const proj=raw.replace(/^\S+\s/,'').split('·')[0].trim();
-    addFocusItem(proj,text);
-  }
-
-  function addFocusItem(proj,text){
-    const g=document.getElementById('focusGrid');
-    const div=document.createElement('div');
-    div.className='focus-item';
-    div.innerHTML=`<div class="focus-item-top"><div class="focus-proj">${proj}</div><button class="focus-del" onclick="delFocusItem(this)">✕</button></div><input class="focus-input" value="${text}" /><button class="focus-done-btn" onclick="toggleFocusDone(this)">✓</button>`;
-    g.appendChild(div);
-  }
-
-  function delFocusItem(btn){ btn.closest('.focus-item').remove(); }
-  function toggleFocusDone(btn){ btn.closest('.focus-item').classList.toggle('done-focus'); }
-
-  // DELETE PROJECT (confirm)
+  // ——— DELETE PROJECT ———
   let cardToDelete = null;
-
-  function confirmDelete(btn){
+  function confirmDelete(btn) {
     cardToDelete = btn.closest('.project-card');
     const name = cardToDelete.querySelector('.project-name').textContent;
     document.getElementById('confirmName').textContent = '"'+name+'"';
     document.getElementById('confirmOverlay').classList.add('open');
   }
 
-  function doDelete(){
-    if(cardToDelete){ cardToDelete.remove(); cardToDelete=null; }
+  async function doDelete() {
+    if (!cardToDelete) return;
+    const id = cardToDelete.dataset.projId;
+    cardToDelete.remove();
+    state.projects = state.projects.filter(p => p.id !== id);
+    state.tasks = state.tasks.filter(t => t.projectId !== id);
+    cardToDelete = null;
     document.getElementById('confirmOverlay').classList.remove('open');
     updateStats();
+    await api('deleteProject', { id });
   }
 
-  function closeConfirm(){
-    cardToDelete=null;
+  function closeConfirm() {
+    cardToDelete = null;
     document.getElementById('confirmOverlay').classList.remove('open');
   }
 
-  // COLOR
-  let selectedColor='#922b3e';
-  function selectColor(el){
+  // ——— NEW PROJECT ———
+  let selectedColor = '#922b3e';
+  function selectColor(el) {
     document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('selected'));
     el.classList.add('selected');
-    selectedColor=el.dataset.color;
+    selectedColor = el.dataset.color;
   }
 
-  // NEW PROJECT
-  let projectCount=0;
-  function submitNewProject(){
-    const name=document.getElementById('np-name').value.trim();
-    if(!name){ document.getElementById('np-name').focus(); return; }
-    const meta=document.getElementById('np-meta').value.trim()||'';
-    const emoji=document.getElementById('np-emoji').value.trim()||'📌';
-    const pri=document.getElementById('np-priority').value;
-    const tasksRaw=document.getElementById('np-tasks').value.trim();
-    const priMap={'p-hot':'🔥 Горит','p-mid':'⚡ Средний','p-low':'🧊 Фон'};
-    const color=selectedColor;
-    projectCount++;
-    const tid='custom'+projectCount;
+  async function submitNewProject() {
+    const name = document.getElementById('np-name').value.trim();
+    if (!name) { document.getElementById('np-name').focus(); return; }
+    const meta  = document.getElementById('np-meta').value.trim() || '';
+    const emoji = document.getElementById('np-emoji').value.trim() || '📌';
+    const pri   = document.getElementById('np-priority').value;
+    const tasksRaw = document.getElementById('np-tasks').value.trim();
 
-    let tasksHtml='';
-    if(tasksRaw){
-      tasksRaw.split(',').map(t=>t.trim()).filter(Boolean).forEach(t=>{
-        tasksHtml+=`<div class="task-item" onclick="if(!event.target.closest('button'))toggleTask(this)"><div class="task-check"></div><div class="task-text">${t}</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>`;
-      });
-    } else {
-      tasksHtml=`<div class="task-item" onclick="if(!event.target.closest('button'))toggleTask(this)"><div class="task-check"></div><div class="task-text">Добавить первые задачи</div><div class="task-actions"><button class="tact focus-btn" onclick="addToFocus(event,this)">★</button><button class="tact del-btn" onclick="delTask(event,this)">✕</button></div></div>`;
+    const result = await api('saveProject', { name, emoji, meta, color: selectedColor, priority: pri });
+    if (!result) return;
+
+    const newProj = { id: result.id, name, emoji, meta, color: selectedColor, priority: pri, phase: 5, phaseDesc: 'Начальный этап', loadLabel: '—', loadPct: 5, section: 'projects' };
+    state.projects.push(newProj);
+
+    if (tasksRaw) {
+      for (const text of tasksRaw.split(',').map(t=>t.trim()).filter(Boolean)) {
+        const tr = await api('saveTask', { projectId: result.id, text });
+        if (tr) state.tasks.push({ id: tr.id, projectId: result.id, text, done: 'false', inFocus: 'false' });
+      }
     }
 
-    const card=document.createElement('div');
-    card.className='project-card';
-    card.innerHTML=`
-      <div class="project-accent" style="background:${color}"></div>
-      <div class="project-top">
-        <div><div class="project-name">${emoji} ${name}</div><div class="project-meta">${meta}</div></div>
-        <div class="top-right">
-          <div class="priority-badge ${pri}" onclick="cyclePriority(this)">${priMap[pri]}</div>
-          <button class="del-card-btn" onclick="confirmDelete(this)">удалить</button>
-        </div>
-      </div>
-      <div class="phase-row">
-        <div class="phase-label">Этап</div>
-        <div class="phase-track"><div class="phase-fill" style="background:${color};width:5%"></div></div>
-        <div class="phase-pct">5%</div>
-      </div>
-      <div class="phase-desc">▸ Начальный этап</div>
-      <div class="tasks-header"><div class="tasks-lbl">Задачи</div><div class="round-btn" onclick="openTaskModal('${tid}')">+</div></div>
-      <div id="tasks-${tid}">${tasksHtml}</div>
-      <div class="load-wrap"><div class="load-label-row"><span>Загрузка</span><span>—</span></div><div class="load-bar"><div class="load-fill" style="background:${color};width:5%"></div></div></div>
-    `;
-
-    const addBtn=document.querySelector('.add-project-card');
-    document.getElementById('projectsGrid').insertBefore(card,addBtn);
-    closeModal('newProjectModal');
+    renderProjects();
     updateStats();
+    closeModal('newProjectModal');
   }
 
-  // MODALS
-  let currentTaskTarget=null;
+  // ——— MODALS ———
+  let currentTaskTarget = null;
 
-  function openTaskModal(proj){
-    currentTaskTarget=proj;
-    document.getElementById('newTaskInput').value='';
+  function openTaskModal(projId) {
+    currentTaskTarget = projId;
+    document.getElementById('newTaskInput').value = '';
     openModal('taskModal');
   }
 
-  function openFocusModal(){
-    document.getElementById('focusProjInput').value='';
-    document.getElementById('focusTaskInput').value='';
+  function openFocusModal() {
+    document.getElementById('focusProjInput').value = '';
+    document.getElementById('focusTaskInput').value = '';
     openModal('focusModal');
   }
 
-  function openNewProjectModal(){
+  function openNewProjectModal() {
     ['np-name','np-meta','np-emoji','np-tasks'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('np-priority').value='p-mid';
-    selectedColor='#922b3e';
+    document.getElementById('np-priority').value = 'p-mid';
+    selectedColor = '#922b3e';
     document.querySelectorAll('.color-dot').forEach((d,i)=>d.classList.toggle('selected',i===0));
     openModal('newProjectModal');
   }
 
-  function openModal(id){
+  function openModal(id) {
     document.getElementById(id).classList.add('open');
-    const inp=document.querySelector('#'+id+' input');
-    if(inp) setTimeout(()=>inp.focus(),50);
+    const inp = document.querySelector('#'+id+' input');
+    if (inp) setTimeout(()=>inp.focus(),50);
   }
 
-  function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
   document.querySelectorAll('.modal-overlay').forEach(el=>{
     el.addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
   });
 
-  function submitTask(){
-    const val=document.getElementById('newTaskInput').value.trim();
-    if(!val) return;
-    const container=document.getElementById('tasks-'+currentTaskTarget);
-    if(!container){ closeModal('taskModal'); return; }
-    container.appendChild(makeTaskEl(val));
-    closeModal('taskModal');
+  async function submitTask() {
+    const val = document.getElementById('newTaskInput').value.trim();
+    if (!val || !currentTaskTarget) return;
+    const result = await api('saveTask', { projectId: currentTaskTarget, text: val });
+    if (!result) return;
+    const newTask = { id: result.id, projectId: currentTaskTarget, text: val, done: 'false', inFocus: 'false' };
+    state.tasks.push(newTask);
+    const container = document.getElementById('tasks-' + currentTaskTarget);
+    if (container) {
+      const item = document.createElement('div');
+      item.outerHTML; // placeholder
+      container.insertAdjacentHTML('beforeend', buildTaskHtml(newTask));
+      bindTaskEvents(container.lastElementChild);
+    }
     updateStats();
+    closeModal('taskModal');
   }
 
-  function submitFocus(){
-    const proj=document.getElementById('focusProjInput').value.trim()||'—';
-    const task=document.getElementById('focusTaskInput').value.trim();
-    if(!task) return;
-    addFocusItem(proj,task);
+  async function submitFocus() {
+    const proj = document.getElementById('focusProjInput').value.trim() || '—';
+    const text = document.getElementById('focusTaskInput').value.trim();
+    if (!text) return;
+    const result = await api('saveFocus', { projectName: proj, text });
+    if (!result) return;
+    state.focus.push({ id: result.id, projectName: proj, text, done: 'false' });
+    renderFocus();
     closeModal('focusModal');
   }
 
-  document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'){
+  document.addEventListener('keydown', function(e) {
+    if (e.key==='Escape') {
       document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));
       closeConfirm();
     }
   });
 
-  updateStats();
-
-  document.querySelectorAll('.task-text').forEach(function(txt){
-    txt.title='Двойной клик — редактировать';
-    txt.addEventListener('dblclick',function(e){ e.stopPropagation(); enableEdit(this); });
-  });
+  // ——— INIT ———
+  loadAndRender();
 </script>
 </body>
 </html>
