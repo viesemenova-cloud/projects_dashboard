@@ -319,12 +319,9 @@
   async function api(action, data={}) {
     setSyncStatus('loading','Синхронизация…');
     try {
-      const url = API_URL + '?action=' + action;
-      const res = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({ action, ...data }),
-        headers: { 'Content-Type': 'text/plain' }
-      });
+      const payload = encodeURIComponent(JSON.stringify(data));
+      const url = API_URL + '?action=' + action + '&data=' + payload;
+      const res = await fetch(url, { method: 'GET', redirect: 'follow' });
       const json = await res.json();
       if (json.error) throw new Error(json.error);
       setSyncStatus('ok','Синхронизировано');
