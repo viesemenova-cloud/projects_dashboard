@@ -61,6 +61,11 @@
   .del-card-btn{font-size:11px;color:var(--ink-faint);background:none;border:none;cursor:pointer;transition:color .15s;letter-spacing:.04em;text-transform:uppercase;}
   .del-card-btn:hover{color:var(--burgundy);}
 
+  .proj-name-link{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--border-dark);transition:border-color .15s;}
+  .proj-name-link:hover{border-color:var(--ink);}
+  .doc-link-btn{font-size:11px;color:var(--ink-muted);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:2px 7px;cursor:pointer;transition:all .15s;white-space:nowrap;}
+  .doc-link-btn:hover{background:var(--ink);color:white;border-color:var(--ink);}
+
   /* STAGE BUTTONS */
   .stage-row{display:flex;align-items:center;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
   .stage-btn{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--ink-muted);cursor:pointer;transition:all .15s;white-space:nowrap;}
@@ -302,6 +307,21 @@
   </div>
 </div>
 
+<!-- MODAL: DOC LINK -->
+<div class="modal-overlay" id="docLinkModal">
+  <div class="modal">
+    <h3>Google Doc проекта</h3>
+    <div class="field-label">Ссылка на документ</div>
+    <input type="text" id="docLinkInput" placeholder="https://docs.google.com/document/d/..." />
+    <div style="font-size:12px;color:var(--ink-muted);margin-top:8px;">Название проекта станет кликабельным и откроет документ в новой вкладке.</div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeModal('docLinkModal')">Отмена</button>
+      <button class="btn btn-ghost" onclick="removeDocLink()" style="color:var(--burgundy)">Удалить ссылку</button>
+      <button class="btn btn-primary" onclick="saveDocLink()">Сохранить</button>
+    </div>
+  </div>
+</div>
+
 <script>
   // ——— CONFIG ———
   // REPLACE THIS with your deployed Apps Script URL after deploying
@@ -418,8 +438,17 @@
       <div class="project-accent" style="background:${proj.color}"></div>
       <div class="project-top">
         <div>
-          <div class="project-name">${proj.emoji} ${proj.name}</div>
-          <div class="project-meta">${proj.meta}</div>
+          <div class="project-name">
+            ${proj.docUrl
+              ? `<a href="${proj.docUrl}" target="_blank" class="proj-name-link">${proj.emoji} ${proj.name}</a>`
+              : `${proj.emoji} ${proj.name}`}
+          </div>
+          <div class="project-meta" style="display:flex;align-items:center;gap:8px;">
+            <span>${proj.meta}</span>
+            <button class="doc-link-btn" onclick="openDocLinkModal(event,'${proj.id}')" title="${proj.docUrl ? 'Изменить ссылку на документ' : 'Прикрепить Google Doc'}">
+              ${proj.docUrl ? '📄' : '＋ doc'}
+            </button>
+          </div>
         </div>
         <div class="top-right">
           ${!isPersonal ? `<div class="priority-badge ${proj.priority}" onclick="cyclePriority(this)">${priMap[proj.priority]||'⚡ Средний'}</div>` : ''}
@@ -762,6 +791,36 @@
       closeConfirm();
     }
   });
+
+  // ——— DOC LINK ———
+  let docLinkProjId = null;
+
+  function openDocLinkModal(e, projId) {
+    e.stopPropagation();
+    docLinkProjId = projId;
+    const proj = state.projects.find(p => p.id === projId);
+    document.getElementById('docLinkInput').value = proj && proj.docUrl ? proj.docUrl : '';
+    openModal('docLinkModal');
+  }
+
+  async function saveDocLink() {
+    const url = document.getElementById('docLinkInput').value.trim();
+    if (!docLinkProjId) return;
+    const proj = state.projects.find(p => p.id === docLinkProjId);
+    if (proj) proj.docUrl = url;
+    closeModal('docLinkModal');
+    renderProjects();
+    await api('updateDocUrl', { id: docLinkProjId, docUrl: url });
+  }
+
+  async function removeDocLink() {
+    if (!docLinkProjId) return;
+    const proj = state.projects.find(p => p.id === docLinkProjId);
+    if (proj) proj.docUrl = '';
+    closeModal('docLinkModal');
+    renderProjects();
+    await api('updateDocUrl', { id: docLinkProjId, docUrl: '' });
+  }
 
   // ——— INIT ———
   loadAndRender();
